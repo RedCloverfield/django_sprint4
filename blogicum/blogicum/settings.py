@@ -7,25 +7,38 @@ SECRET_KEY = 'django-insecure--_6&!e-x38s#9z4u7j20)e3hq@31f(zim#w0$21y2c!i($w+i*
 
 DEBUG = True
 
-CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 
 ALLOWED_HOSTS = []
+
+LOGIN_REDIRECT_URL = 'blog:index'  # изменить на blog.profile
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static_dev',
 ]
 
+MEDIA_ROOT = BASE_DIR / 'media'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'core.apps.CoreConfig',
     'pages.apps.PagesConfig',
-    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_bootstrap5',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -36,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'blogicum.urls'
@@ -84,11 +98,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'  # перепроверить
+
+# DATETIME_INPUT_FORMATS = ['%d.%m.$Y %H:%M'] # как вариант
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False  # локализация должна быть включена
 
 USE_TZ = True
 
