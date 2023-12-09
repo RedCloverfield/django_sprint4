@@ -9,7 +9,7 @@ from django.views.generic import (
     DetailView
 )
 
-from .constants import POSTS_PER_PAGE, USER
+from core.constants import POSTS_PER_PAGE, USER
 from .forms import PostForm, CommentForm, CustomUserChangeForm
 from .mixins import (
     PostUpdateDeleteMixin,

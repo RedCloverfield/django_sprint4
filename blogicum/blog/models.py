@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
-from core.models import PublishedCreatedModel
+from core.models import PublishedModel, CreatedAtModel
 
-from .constants import MAX_LENGTH
+from core.constants import MAX_TEXT_LENGTH, MAX_CAT_TITLE_LENGTH
 
 
 User = get_user_model()
@@ -21,9 +21,9 @@ class PublishedPostsAndRelatedTablesMangager(models.Manager):
         )
 
 
-class Post(PublishedCreatedModel):
+class Post(PublishedModel, CreatedAtModel):
     title = models.CharField(
-        max_length=MAX_LENGTH,
+        max_length=MAX_TEXT_LENGTH,
         blank=False,
         verbose_name='Заголовок'
     )
@@ -72,9 +72,9 @@ class Post(PublishedCreatedModel):
         return self.title
 
 
-class Category(PublishedCreatedModel):
+class Category(PublishedModel, CreatedAtModel):
     title = models.CharField(
-        max_length=MAX_LENGTH,
+        max_length=MAX_TEXT_LENGTH,
         blank=False,
         verbose_name='Заголовок'
     )
@@ -90,22 +90,22 @@ class Category(PublishedCreatedModel):
         'разрешены символы латиницы, цифры, дефис и подчёркивание.'
     )
 
-    class Meta(PublishedCreatedModel.Meta):
+    class Meta(CreatedAtModel.Meta):
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return self.title
+        return self.title[:MAX_CAT_TITLE_LENGTH]
 
 
-class Location(PublishedCreatedModel):
+class Location(PublishedModel, CreatedAtModel):
     name = models.CharField(
-        max_length=MAX_LENGTH,
+        max_length=MAX_TEXT_LENGTH,
         blank=False,
         verbose_name='Название места'
     )
 
-    class Meta(PublishedCreatedModel.Meta):
+    class Meta(CreatedAtModel.Meta):
         verbose_name = 'местоположение'
         verbose_name_plural = 'Местоположения'
 
@@ -113,7 +113,7 @@ class Location(PublishedCreatedModel):
         return self.name
 
 
-class Comment(models.Model):
+class Comment(CreatedAtModel):
     text = models.TextField(verbose_name='Текст комментария')
     post = models.ForeignKey(
         Post,
@@ -122,9 +122,20 @@ class Comment(models.Model):
     )
     author = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='Автор публикации'
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено'
+    )
 
-    class Meta:
-        ordering = ('created_at',)
+    class Meta(CreatedAtModel.Meta):
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return (
+            f'Комментарий пользователя {self.author} '
+            f'к посту "{self.post:.}": {self.text:.50}...'
+        )
