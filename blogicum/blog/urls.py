@@ -13,7 +13,11 @@ urlpatterns = [
         views.PostUpdate.as_view(),
         name='edit_post'
     ),
-    path('posts/<int:post_id>/', views.PostDetail.as_view(), name='post_detail'),
+    path(
+        'posts/<int:post_id>/',
+        views.PostDetail.as_view(),
+        name='post_detail'
+    ),
     path(
         'posts/<int:post_id>/delete/',
         views.PostDelete.as_view(),
@@ -44,6 +48,9 @@ urlpatterns = [
         views.UserProfile.as_view(),
         name='profile'
     ),
-    path('edit/profile/', views.UserProfileUpdate.as_view(), name='edit_profile'),
-    # слаг не передаем
+    path(
+        'edit/profile/',
+        views.UserProfileUpdate.as_view(),
+        name='edit_profile'
+    ),
 ]

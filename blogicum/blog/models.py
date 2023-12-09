@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 from core.models import PublishedCreatedModel
 
@@ -7,6 +8,17 @@ from .constants import MAX_LENGTH
 
 
 User = get_user_model()
+
+
+class PublishedPostsAndRelatedTablesMangager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            pub_date__lte=timezone.now(),
+            is_published=True,
+            category__is_published=True
+        ).select_related(
+            'author', 'location', 'category'
+        )
 
 
 class Post(PublishedCreatedModel):
@@ -48,6 +60,8 @@ class Post(PublishedCreatedModel):
         related_name='posts',
         verbose_name='Категория'
     )
+    objects = models.Manager()
+    public_posts = PublishedPostsAndRelatedTablesMangager()
 
     class Meta:
         verbose_name = 'публикация'

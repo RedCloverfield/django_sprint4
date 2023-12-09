@@ -9,9 +9,14 @@ DEBUG = True
 
 CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
 
-LOGIN_REDIRECT_URL = 'blog:index'  # изменить на blog.profile
+LOGIN_URL = 'login'
+
+LOGIN_REDIRECT_URL = 'blog:index'
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -98,13 +103,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'Europe/Moscow'  # перепроверить
-
-# DATETIME_INPUT_FORMATS = ['%d.%m.$Y %H:%M'] # как вариант
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
-USE_L10N = False  # локализация должна быть включена
+USE_L10N = True
 
 USE_TZ = True
 
