@@ -2,22 +2,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.views.generic import (
-    ListView,
-    UpdateView,
     CreateView,
     DeleteView,
-    DetailView
+    DetailView,
+    ListView,
+    UpdateView,
 )
 
 from core.constants import POSTS_PER_PAGE, USER
-from .forms import PostForm, CommentForm, CustomUserChangeForm
+
+from .forms import CommentForm, CustomUserChangeForm, PostForm
 from .mixins import (
-    PostUpdateDeleteMixin,
     CommentUpdateDeleteMixin,
+    PostUpdateDeleteMixin,
     ReverseToPostPageMixin,
     ReverseToProfilePageMixin
 )
-from .models import Post, Category, Comment
+from .models import Category, Comment, Post
 from .utils import public_posts_with_comment_count
 
 

@@ -2,9 +2,12 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
-from core.models import PublishedModel, CreatedAtModel
-
-from core.constants import MAX_TEXT_LENGTH, MAX_CAT_TITLE_LENGTH
+from core.constants import (
+    MAX_CAT_TITLE_LENGTH,
+    MAX_COMMENT_LENGTH,
+    MAX_TEXT_LENGTH
+)
+from core.models import CreatedAtModel, PublishedModel
 
 
 User = get_user_model()
@@ -137,5 +140,5 @@ class Comment(CreatedAtModel):
     def __str__(self):
         return (
             f'Комментарий пользователя {self.author} '
-            f'к посту "{self.post:.}": {self.text:.50}...'
+            f'к посту "{self.post}": {self.text:.{MAX_COMMENT_LENGTH}}...'
         )

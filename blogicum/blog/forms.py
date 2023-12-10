@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from core.constants import USER
+
 from .models import Post, Comment
 
 
@@ -24,12 +25,10 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ('author',)
-        # добавил format, но при редактировании поста
-        # дата и время не подгружаются
         widgets = {
             'pub_date': forms.DateTimeInput(
                 attrs={'type': 'datetime-local'},
-                format='%d.%m.%Y %H:%M'
+                format='%Y-%m-%d %H:%M'
             )
         }
 
